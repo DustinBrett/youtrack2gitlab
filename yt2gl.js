@@ -14,16 +14,18 @@ var argv = require('optimist')
     .alias('g', 'gitlaburl')
     .alias('p', 'project')
     .alias('t', 'token')
+    .alias('s', 'ssl')
     .describe('i', 'CSV file exported from YouTrack (Example: issues.csv)')
     .describe('u', 'User mapping file (Example: users.json)')
     .describe('g', 'GitLab URL hostname (Example: gitlab.example.com)')
     .describe('p', 'GitLab project name including namespace (Example: mycorp/myproj)')
     .describe('t', 'An admin user\'s private token (Example: a2r33oczFyQzq53t23Vj)')
+    .describe('s', 'Set this to \'true\' if using SSL for API')
     .argv;
 
 var inputFile = __dirname + '/' + argv.input;
 var usersFile = __dirname + '/' + argv.users;
-var gitlabAPIURLBase = argv.gitlaburl + '/api/v3';
+var gitlabAPIURLBase = ((argv.ssl === 'true') ? 'https://' : 'http://') + argv.gitlaburl + '/api/v3';
 var gitlabProjectName = argv.project;
 var gitlabAdminPrivateToken = argv.token;
 
@@ -84,7 +86,7 @@ getGitLabProject(gitlabProjectName, gitlabAdminPrivateToken, function(error, pro
               setTimeout(callback, 1000);
 
               if (error) {
-                console.error((issueId + ': Failed to insert.').red);
+                console.error((issueId + ': Failed to insert. ' + JSON.stringify(error)).red);
                 return;
               }
 
