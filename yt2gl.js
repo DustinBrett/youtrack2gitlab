@@ -23,7 +23,7 @@ var argv = require('optimist')
 
 var inputFile = __dirname + '/' + argv.input;
 var usersFile = __dirname + '/' + argv.users;
-var gitlabAPIURLBase = 'http://' + argv.gitlaburl + '/api/v3';
+var gitlabAPIURLBase = argv.gitlaburl + '/api/v3';
 var gitlabProjectName = argv.project;
 var gitlabAdminPrivateToken = argv.token;
 
